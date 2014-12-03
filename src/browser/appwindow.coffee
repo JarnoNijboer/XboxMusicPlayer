@@ -13,56 +13,61 @@ _ = require 'underscore-plus'
 
 module.exports =
 class AppWindow
-  _.extend @prototype, EventEmitter.prototype
+	_.extend @prototype, EventEmitter.prototype
 
-  constructor: (options) ->
-    @loadSettings =
-      bootstrapScript: require.resolve '../renderer/main'
+	constructor: (options) ->
+		@loadSettings =
+			bootstrapScript: require.resolve '../renderer/main'
 
-    @loadSettings = _.extend(@loadSettings, options)
+		@loadSettings = _.extend(@loadSettings, options)
 
-    windowOpts =
-      width: 800
-      height: 600
-      title: options.title ? "You Should Set options.title"
-      'web-preferences':
-        'subpixel-font-scaling': true
-        'direct-write': true
+		icon = 'file://' + __dirname + '/../../static/img/logo-32x32.png';
 
-    windowOpts = _.extend(windowOpts, @loadSettings)
+		windowOpts =
+			width: 1030,
+			height: 768,
+			'min-width': 1030,
+			'min-height': 640,
+			icon: icon
+			title: options.title ? "You Should Set options.title"
+			'web-preferences':
+				'subpixel-font-scaling': true
+				'direct-write': true
 
-    @window = new BrowserWindow(windowOpts)
+		windowOpts = _.extend(windowOpts, @loadSettings)
 
-    @window.on 'closed', (e) =>
-      this.emit 'closed', e
+		@window = new BrowserWindow(windowOpts)
 
-    @window.on 'devtools-opened', (e) =>
-      @window.webContents.send 'window:toggle-dev-tools', true
+		@window.on 'closed', (e) =>
+			this.emit 'closed', e
 
-    @window.on 'devtools-closed', (e) =>
-      @window.webContents.send 'window:toggle-dev-tools', false
+		@window.on 'devtools-opened', (e) =>
+			@window.webContents.send 'window:toggle-dev-tools', true
 
-  show: ->
-    targetPath = path.resolve(__dirname, '..', '..', 'static', 'index.html')
+		@window.on 'devtools-closed', (e) =>
+			@window.webContents.send 'window:toggle-dev-tools', false
 
-    targetUrl = url.format
-      protocol: 'file'
-      pathname: targetPath
-      slashes: true
-      query: {loadSettings: JSON.stringify(@loadSettings)}
+	show: ->
+		targetPath = path.resolve(__dirname, '..', '..', 'static', 'index.html')
 
-    @window.loadUrl targetUrl
-    @window.show()
+		targetUrl = url.format
+			protocol: 'file'
+			pathname: targetPath
+			slashes: true
+			query: {loadSettings: JSON.stringify(@loadSettings)}
 
-  reload: ->
-    @window.webContents.reload()
+		@window.loadUrl targetUrl
+		@window.show()
 
-  toggleFullScreen: ->
-    @window.setFullScreen(not @window.isFullScreen())
+	reload: ->
+		@window.webContents.reload()
 
-  toggleDevTools: ->
-    @window.toggleDevTools()
+	toggleFullScreen: ->
+		@window.setFullScreen(not @window.isFullScreen())
 
-  close: ->
-    @window.close()
-    @window = null
+	toggleDevTools: ->
+		@window.toggleDevTools()
+
+	close: ->
+		@window.close()
+		@window = null

@@ -1,4 +1,22 @@
-h1 = document.createElement 'h1'
-h1.innerText = 'Hello World'
+class Bootstrap
+	constructor: ->
+		@webview = document.getElementById 'wvAppHost'
 
-document.body.appendChild h1
+		@webview.addEventListener 'did-start-loading', (e) -> @handleWebviewLoad()
+
+ 	handleWebviewLoad: ->
+ 		@hideLoader()
+ 		@webview.openDevTools()
+
+	hideLoader = ->
+		appHost = document.getElementById 'appHost'
+
+		if appHost.classList.contains 'hide'
+			appHost.classList.remove 'hide'
+
+		loader = document.getElementById 'loader'
+
+		if not loader.classList.contains 'hide'
+			loader.classList.add 'hide'
+
+module.exports = new Bootstrap()

@@ -13,38 +13,42 @@ _ = require 'underscore-plus'
 
 AppMenu = require './appmenu'
 AppWindow = require './appwindow'
+AppShortcut = require './appshortcut'
 
 module.exports =
 class Application
-  _.extend @prototype, EventEmitter.prototype
+	_.extend @prototype, EventEmitter.prototype
 
-  constructor: (options) ->
-    {@resourcePath, @version, @devMode } = options
+	constructor: (options) ->
+		{@resourcePath, @version, @devMode } = options
 
-    @pkgJson = require '../../package.json'
+		@pkgJson = require '../../package.json'
 
-    @window = new AppWindow(options)
-    @menu = new AppMenu(pkg: @pkgJson)
+		@window = new AppWindow(options)
+		@menu = new AppMenu(pkg: @pkgJson)
+		@shortcut = new AppShortcut(@window)
 
-    @window.on 'closed', (e) -> app.quit()
+		@window.on 'closed', (e) -> app.quit()
 
-    @window.show()
+		@window.show()
 
-    @menu.attachToWindow @window
-    @handleMenuItems(@menu, @window)
+		@menu.attachToWindow @window
+		@handleMenuItems(@menu, @window)
 
-  handleMenuItems: (menu, thisWindow) ->
-    menu.on 'application:quit', -> app.quit()
+		@shortcut.registerAll()
 
-    menu.on 'window:reload', ->
-      thisWindow.reload()
+	handleMenuItems: (menu, thisWindow) ->
+		menu.on 'application:quit', -> app.quit()
 
-    menu.on 'window:toggle-full-screen', ->
-      thisWindow.toggleFullScreen()
+		menu.on 'window:reload', ->
+			thisWindow.reload()
 
-    menu.on 'window:toggle-dev-tools', ->
-      thisWindow.toggleDevTools()
+		menu.on 'window:toggle-full-screen', ->
+			thisWindow.toggleFullScreen()
 
-  reload: -> @window.reload()
+		menu.on 'window:toggle-dev-tools', ->
+			thisWindow.toggleDevTools()
 
-  exit: (status) -> app.exit(status)
+	reload: -> @window.reload()
+
+	exit: (status) -> app.exit(status)
