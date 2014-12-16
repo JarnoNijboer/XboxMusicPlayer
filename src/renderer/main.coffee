@@ -1,16 +1,15 @@
 class Bootstrap
 	constructor: ->
-		@self = this
 		@webview = document.getElementById 'wvAppHost'
 
-		@webview.addEventListener 'did-start-loading', ->
-			@self.handleWebviewLoad()
+		@webview.addEventListener 'did-start-loading', @handleOnWebviewLoad()
+		@webview.addEventListener 'did-finish-loading', @handleWebviewLoad()
+
+	handleOnWebviewLoad: ->
+		@hideLoader()
 
 	handleWebviewLoad: ->
-		@hideLoader()
-		# @webview.openDevTools()
-
-		# @webview.addEventListener 'did-start-loading', (e) -> @handleWebviewLoad()
+		# setTimeout @webview.openDevTools, 500
 
 	hideLoader: ->
 		appHost = document.getElementById 'appHost'
