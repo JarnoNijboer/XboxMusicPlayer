@@ -3,7 +3,7 @@ path = require 'path'
 os = require 'os'
 _ = require 'underscore-plus'
 
-# Add support for obselete APIs of vm module so we can make some third-party
+# Add support for obsolete APIs of vm module so we can make some third-party
 # modules work under node v0.11.x.
 require 'vm-compatibility-layer'
 
@@ -11,11 +11,8 @@ _ = require 'underscore-plus'
 
 packageJson = require '../package.json'
 
-# Shim harmony collections in case grunt was invoked without harmony
-# collections enabled
-_.extend(global, require('harmony-collections')) unless global.WeakMap?
-
 module.exports = (grunt) ->
+  grunt.loadNpmTasks('grunt-bower-task')
   grunt.loadNpmTasks('grunt-coffeelint')
   grunt.loadNpmTasks('grunt-lesslint')
   grunt.loadNpmTasks('grunt-cson')
@@ -23,7 +20,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-contrib-less')
   grunt.loadNpmTasks('grunt-shell')
-  grunt.loadNpmTasks('grunt-download-atom-shell')
+  grunt.loadNpmTasks('grunt-build-atom-shell')
   grunt.loadNpmTasks('grunt-atom-shell-installer')
   grunt.loadNpmTasks('grunt-peg')
   grunt.loadTasks('tasks')
@@ -165,17 +162,24 @@ module.exports = (grunt) ->
         'static/**/*.less'
       ]
 
-    'download-atom-shell':
-      version: packageJson.atomShellVersion
-      outputDir: 'atom-shell'
-      downloadDir: atomShellDownloadDir
-      rebuild: true  # rebuild native modules after atom-shell is updated
+    'build-atom-shell':
+      tag: "7fdd94520e21d4d07095ebedd23139ed0588d673"
+      remoteUrl: "https://github.com/atom/atom-shell"
+      buildDir: buildDir
+      rebuildPackages: true
+      projectName: pkgName
+      productName: productName
 
     'create-windows-installer':
       appDirectory: shellAppDir
       outputDirectory: path.join(buildDir, 'installer')
       authors: packageJson.author
       iconUrl: packageJson.iconUrl ? 'https://raw.githubusercontent.com/atom/atom/master/resources/atom.png'
+
+    bower:
+      install:
+        options:
+          targetDir: 'static/components'
 
     shell:
       'kill-app':
@@ -193,7 +197,7 @@ module.exports = (grunt) ->
   grunt.registerTask('lint', ['coffeelint', 'csslint', 'lesslint'])
   grunt.registerTask('test', ['shell:kill-app', 'run-specs'])
 
-  ciTasks = ['output-disk-space', 'download-atom-shell', 'build']
+  ciTasks = ['output-disk-space', 'build-atom-shell', 'bower:install', 'build']
   ciTasks.push('dump-symbols') if process.platform isnt 'win32'
   ciTasks.push('set-version', 'check-licenses', 'lint')
   ciTasks.push('mkdeb') if process.platform is 'linux'
@@ -203,5 +207,5 @@ module.exports = (grunt) ->
   ciTasks.push('publish-build')
   grunt.registerTask('ci', ciTasks)
 
-  defaultTasks = ['download-atom-shell', 'build', 'set-version']
+  defaultTasks = ['build-atom-shell', 'bower:install', 'build', 'set-version']
   grunt.registerTask('default', defaultTasks)

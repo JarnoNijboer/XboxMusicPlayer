@@ -1,20 +1,20 @@
 {
-  "name": "xboxmusicplayer",
+  "name": "xboxmusic",
   "productName": "XboxMusic",
   "version": "0.2.0",
   "description": "Wrapper for Xbox Music webapp",
   "main": "./src/browser/main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JarnoNijboer/XboxMusicApp.git"
+    "url": "https://github.com/JarnoNijboer/XboxMusicPlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/JarnoNijboer/XboxMusicApp/issues"
+    "url": "https://github.com/JarnoNijboer/XboxMusicPlayer/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/JarnoNijboer/XboxMusicApp/raw/master/LICENSE.md"
+      "url": "https://github.com/JarnoNijboer/XboxMusicPlayer/raw/master/LICENSE.md"
     }
   ],
   "atomShellVersion": "0.19.5",

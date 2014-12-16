@@ -1,14 +1,18 @@
 class Bootstrap
 	constructor: ->
+		@self = this
 		@webview = document.getElementById 'wvAppHost'
 
-		@webview.addEventListener 'did-start-loading', (e) -> @handleWebviewLoad()
+		@webview.addEventListener 'did-start-loading', ->
+			@self.handleWebviewLoad()
 
- 	handleWebviewLoad: ->
- 		@hideLoader()
- 		@webview.openDevTools()
+	handleWebviewLoad: ->
+		@hideLoader()
+		# @webview.openDevTools()
 
-	hideLoader = ->
+		# @webview.addEventListener 'did-start-loading', (e) -> @handleWebviewLoad()
+
+	hideLoader: ->
 		appHost = document.getElementById 'appHost'
 
 		if appHost.classList.contains 'hide'
