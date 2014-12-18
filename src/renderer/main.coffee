@@ -1,15 +1,12 @@
+AppWebview = require './appwebview'
+
 class Bootstrap
 	constructor: ->
-		@webview = document.getElementById 'wvAppHost'
+		@webviewId = 'wvAppHost'
 
-		@webview.addEventListener 'did-start-loading', @handleOnWebviewLoad()
-		@webview.addEventListener 'did-finish-loading', @handleWebviewLoad()
+		@webview = new AppWebview(@webviewId)
 
-	handleOnWebviewLoad: ->
-		@hideLoader()
-
-	handleWebviewLoad: ->
-		# setTimeout @webview.openDevTools, 500
+		@webview.on 'did-start-loading', @hideLoader
 
 	hideLoader: ->
 		appHost = document.getElementById 'appHost'

@@ -28,7 +28,9 @@ class Application
 		@menu = new AppMenu(pkg: @pkgJson)
 		@shortcut = new AppShortcut(@window)
 
-		@window.on 'closed', (e) -> app.quit()
+		@window.on 'closed', (e) ->
+			@shortcut.unregisterAll()
+			app.quit()
 
 		@window.show()
 

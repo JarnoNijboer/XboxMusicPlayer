@@ -36,4 +36,3 @@ class AppShortcut
 	register: (key) ->
 		globalShortcut.register key.keyCode, ->
 			@window.webContents.send 'app-shortcut', key.action
-			console.log 'app-shortcut', key.keyCode, key.action
