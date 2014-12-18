@@ -21,14 +21,19 @@ class AppWindow
 
 		@loadSettings = _.extend(@loadSettings, options)
 
-		icon = 'file://' + __dirname + '/../../static/img/logo-32x32.png';
+		iconPath = path.resolve(__dirname, '..', '..', 'static', 'img', 'logo-32x32.png')
+
+		iconUrl = url.format
+			protocol: 'file'
+			pathname: iconPath
+			slashes: true
 
 		windowOpts =
 			width: 1030,
 			height: 768,
 			'min-width': 1030,
 			'min-height': 640,
-			icon: icon
+			icon: iconUrl,
 			title: options.title ? "You Should Set options.title"
 			'web-preferences':
 				'subpixel-font-scaling': true
