@@ -2,7 +2,8 @@
   "name": "xboxmusic",
   "productName": "XboxMusic",
   "version": "0.2.0",
-  "description": "Wrapper for Xbox Music webapp",
+  "description": "Xbox Music Player",
+  "author": "Jarno Nijboer",
   "main": "./src/browser/main.js",
   "repository": {
     "type": "git",
@@ -17,7 +18,7 @@
       "url": "https://github.com/JarnoNijboer/XboxMusicPlayer/raw/master/LICENSE.md"
     }
   ],
-  "atomShellVersion": "0.20.1",
+  "atomShellVersion": "0.20.2",
   "dependencies": {
     "async": "0.2.6",
     "coffee-script": "1.7.0",

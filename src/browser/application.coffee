@@ -29,7 +29,6 @@ class Application
 		@shortcut = new AppShortcut(@window)
 
 		@window.on 'closed', (e) ->
-			@shortcut.unregisterAll()
 			app.quit()
 
 		@window.show()
@@ -54,3 +53,7 @@ class Application
 	reload: -> @window.reload()
 
 	exit: (status) -> app.exit(status)
+
+	handleWindowClosed = (shortcut) ->
+		shortcut.unregisterAll()
+		app.quit()
