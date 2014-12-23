@@ -37,6 +37,7 @@ module.exports = (grunt) ->
 
   pkgName = packageJson.name
   productName = packageJson.productName
+  atomShellVersion = packageJson.atomShellVersion
   appName = if process.platform is 'darwin' then "#{productName}.app" else productName
   executableName = if process.platform is 'win32' then "#{productName}.exe" else productName
   executableName = executableName.toLowerCase() if process.platform is 'linux'
@@ -163,7 +164,7 @@ module.exports = (grunt) ->
       ]
 
     'build-atom-shell':
-      tag: "a23218c51d11107d429540bc526ea815a2836c7e"
+      tag: atomShellVersion
       remoteUrl: "https://github.com/atom/atom-shell"
       buildDir: buildDir
       rebuildPackages: true
